@@ -1,0 +1,19 @@
+.main-body{
+    background-image: url("../images/theater.jpeg");
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat; 
+}
+@font-face {
+    font-family: Gutter_Rust_Italic;
+    src: url("/assets/fonts/Gutter_Rust_Italic.otf");
+}
+.heading{
+    color: #ffffff;
+    font-family: Gutter_Rust_Italic;
+    
+}
+.logo img{
+    width: 10%;
+    
+}
