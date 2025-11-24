@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies</title>
+    <title>Movie Time</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -12,23 +12,55 @@
 
 <body class="main-body">
     <header class="py-3 mb-4 border-bottom">
-        <div class="container d-flex flex-wrap justify-content-center logo"> 
-            <a href="index.html" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none"> 
-                <img src="assets/images/movie_4831192.png" alt="logo"> 
-                <span class="fs-4 heading">Movie Time</span> 
+        <div class="container d-flex flex-wrap justify-content-center logo">
+            <a href="index.html" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+                <img src="assets/images/movie_4831192.png" alt="logo">
+                <span class="fs-4 header">Movie Time</span>
             </a>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search"> 
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search"> 
-            </form>
+            <a href="movie.html">
+                <div class="col-12 col-lg-auto mb-3 mb-lg-0">
+                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="search">Search Movie-></button>
+                </div>
+            </a>
+            
+            
         </div>
     </header>
 
+    
+    <div class="px-4 py-5 my-5 text-center main-content">
+    <h1 class="display-4 fw-bold">Hey! It's Movie Time.....</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">
+        Step into a world where stories come alive! Discover the world of cinema with our curated collection of
+        movies, from timeless classics to the latest blockbusters—all in one place. Whether you're a casual
+        viewer or a true film lover, we help you find your next favorite movie effortlessly.
+        Your next unforgettable film experience starts here!
+      </p>
+      <a href="movie_list.html">
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <button id="discoverBtn" type="button" class="btn btn-outline-secondary btn-lg px-4">Discover a Movie -></button>
+        </div>
+      </a>
+    </div>
+  </div>
 
+  
+  <div class="container my-5">
+    <div id="random-results" ></div>
+  </div>
+
+  
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-start align-items-center py-0 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <span class="mb-3 mb-md-0 main-content">© 2025 Movie Time, Inc</span>
+      </div>
+    </footer>
+  </div>
 
     <script src="assets/js/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+    
 </body>
 
 </html>
