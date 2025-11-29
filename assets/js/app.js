@@ -80,25 +80,22 @@ async function getRandomMovies() {
 function displayRandomMovies(movies) {
 
     let container = document.getElementById("random-results"); // FIX
-    container.innerHTML = ""; 
+    container.innerHTML = `<div class="movie-grid" id="movies-grid"></div>`; 
+    const grid = document.getElementById("movies-grid");
     movies.forEach(movie => {
-    let col = document.createElement("div");
-    col.className = "movie-card";
+        let col = document.createElement("div");
+        col.className = "movie-card";
 
-    col.innerHTML = `
-        <div class="movie-card">
-            <img src="${movie.Poster}" alt="${movie.Title}">
-            <h4>${movie.Title}</h4>
-            <p>${movie.Year}</p>
-        </div>
-    `;
+        col.innerHTML = `
+            <div class="movie-card">
+                <img src="${movie.Poster}" alt="${movie.Title}">
+                <h4>${movie.Title}</h4>
+                <p>${movie.Year}</p>
+            </div>
+        `;
 
-    col.addEventListener("click", () => {
-        window.location.href = "movie.html?title=" + encodeURIComponent(movie.Title);
+        grid.appendChild(col);
     });
-
-    container.appendChild(col);
-});
 }
 
 
@@ -139,12 +136,6 @@ function displayKeywordMovies(movies) {
             </div>
         `;
 
-        col.addEventListener("click", () => {
-            window.location.href = "movie.html?title=" + encodeURIComponent(movie.Title);
-        });
-
         container.appendChild(col);
     });
 }
-
-
