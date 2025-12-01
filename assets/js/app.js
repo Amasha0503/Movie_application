@@ -1,96 +1,144 @@
-console.log("js loaded")
+console.log("js loaded");
 
-let apikey="40911ae8"; 
+const apikey = "40911ae8"; 
 
-let title=document.getElementById("search");
+async function apiCall(title_name) {
+    try {
+        const response = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title_name)}&apikey=${apikey}`);
+        const data = await response.json();
 
-title.addEventListener("keypress",e => {
-    if (e.key == "Enter") {
-        apiCall(title.value);
+        if (data.Response === "True") {
+            setDetails(data);
+            return true;
+        } else {
+            showError("Movie not found!");
+            return false;
+        }
+    } catch (error) {
+        console.error("API Error:", error);
+        showError("Failed to load movie!");
+        return false;
     }
-});
-
-let apiCall = async (title_name) => {
-    await fetch(`http://www.omdbapi.com/?t=${title_name}&apikey=${apikey}`)
-    .then(res => res.json())
-    .then(data => {
-        setDetails(data);
-        console.log(title_name);
-    });
-};
-
-let setDetails=(data)=>{
-    let title_name=document.getElementById("title_name");
-    let year=document.getElementById("year");
-    let poster=document.getElementById("poster");
-    let genre=document.getElementById("genre");
-    let director=document.getElementById("director");
-    let actors=document.getElementById("actors");
-    let plot=document.getElementById("plot");
-    let ratings=document.getElementById("rates");
-
-    title_name.innerText=data.Title;
-    year.innerText=data.Year;
-    poster.src=data.Poster;
-    genre.innerText=data.Genre;
-    director.innerText=data.Director;
-    actors.innerText=data.Actors;
-    plot.innerText=data.Plot;
-    ratings.innerText=data.imdbRating;
-
 }
-    
 
+function setDetails(data) {
+    const elements = {
+        title_name: document.getElementById("title_name"),
+        year: document.getElementById("year"),
+        poster: document.getElementById("poster"),
+        genre: document.getElementById("genre"),
+        director: document.getElementById("director"),
+        actors: document.getElementById("actors"),
+        plot: document.getElementById("plot"),
+        rates: document.getElementById("rates")
+    };
+
+    if (elements.title_name) elements.title_name.innerText = data.Title || "N/A";
+    if (elements.year) elements.year.innerText = data.Year || "N/A";
+    if (elements.poster) {
+        elements.poster.src = data.Poster && data.Poster !== "N/A" ? data.Poster : 'https://via.placeholder.com/700x500/1a1a1a/ffffff?text=No+Poster';
+        elements.poster.alt = data.Title || "Movie Poster";
+    }
+    if (elements.genre) elements.genre.innerText = data.Genre || "N/A";
+    if (elements.director) elements.director.innerText = data.Director || "N/A";
+    if (elements.actors) elements.actors.innerText = data.Actors || "N/A";
+    if (elements.plot) elements.plot.innerText = data.Plot || "No plot available";
+    if (elements.rates) elements.rates.innerText = data.imdbRating ? `${data.imdbRating}/10` : "N/A";
+}
+
+function showError(message) {
+    const elements = {
+        title_name: document.getElementById("title_name"),
+        year: document.getElementById("year"),
+        poster: document.getElementById("poster"),
+        genre: document.getElementById("genre"),
+        director: document.getElementById("director"),
+        actors: document.getElementById("actors"),
+        plot: document.getElementById("plot"),
+        rates: document.getElementById("rates")
+    };
+
+    if (elements.title_name) elements.title_name.innerText = "Movie Not Found";
+    if (elements.year) elements.year.innerText = "N/A";
+    if (elements.poster) elements.poster.src = 'https://via.placeholder.com/700x500/cc0000/ffffff?text=Movie+Not+Found';
+    if (elements.genre) elements.genre.innerText = "N/A";
+    if (elements.director) elements.director.innerText = "N/A";
+    if (elements.actors) elements.actors.innerText = "N/A";
+    if (elements.plot) elements.plot.innerText = message;
+    if (elements.rates) elements.rates.innerText = "N/A";
+}
 
 const keywords = [
-    "batman","superman","spiderman","avengers","marvel","dc","thor","hulk",
+  "batman","superman","spiderman","avengers","marvel","dc","thor","hulk",
   "captain","star wars","star trek","jurassic","harry potter","james bond",
   "mission impossible","terminator","matrix","transformers",
-
   "action","fight","assassin","revenge","crime","spy","gangster","chase",
   "war","battle","soldier","killer","police",
-
   "ghost","horror","zombie","demon","dark","mystery","haunted","nightmare","fear","survival",
-
-  "love","romance","heart","wedding","kiss","relationship","valentine",
-
+  "fairy","wizard","witch","sword","castle","king","queen","prince","princess","beauty","knight",
   "dragon","magic","kingdom","fantasy","legend","quest","future","space","adventure","dream",
-
   "life","family","story","journey","history","reality"
 ];
 
-
-window.onload = () => {
-    getRandomMovies();
-};
+window.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById("random-results")) {
+        getRandomMovies();
+    }
+    const keywordResults = document.getElementById("keyword-results");
+    const searchInput = document.getElementById("search");
+    if (keywordResults && searchInput) {
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                searchByKeyword(searchInput.value.trim());
+                searchInput.value = "";
+            }
+        });
+    }
+    setupMoviePageSearch();
+});
 
 async function getRandomMovies() {
     let keyword = keywords[Math.floor(Math.random() * keywords.length)];
 
-    let response = await fetch(`https://www.omdbapi.com/?s=${keyword}&apikey=${apikey}`);
-    let data = await response.json();
+    try {
+        let response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(keyword)}&apikey=${apikey}`);
+        let data = await response.json();
 
-    if (data.Response === "True") {
-        displayRandomMovies(data.Search);
-    } else {
-        document.getElementById("random-results").innerHTML = "<h3>No movies found</h3>";
+        if (data.Response === "True") {
+            displayRandomMovies(data.Search);
+        } else {
+            const rr = document.getElementById("random-results");
+            if (rr) rr.innerHTML = "<h3>No movies found</h3>";
+        }
+    } catch (err) {
+        console.error("getRandomMovies fetch error:", err);
+        const rr = document.getElementById("random-results");
+        if (rr) rr.innerHTML = "<h3>Unable to load movies</h3>";
     }
 }
 
 function displayRandomMovies(movies) {
+    const container = document.getElementById("random-results");
+    if (!container) return;
 
-    let container = document.getElementById("random-results"); // FIX
-    container.innerHTML = `<div class="movie-grid" id="movies-grid"></div>`; 
+    container.innerHTML = `<div class="movie-grid" id="movies-grid"></div>`;
     const grid = document.getElementById("movies-grid");
+    if (!grid) return;
+
     movies.forEach(movie => {
+        const poster = movie.Poster && movie.Poster !== "N/A"
+            ? movie.Poster
+            : 'https://via.placeholder.com/400x280/1a1a1a/ffffff?text=No+Poster';
+
         let col = document.createElement("div");
         col.className = "movie-card";
 
         col.innerHTML = `
-            <div class="movie-card">
-                <img src="${movie.Poster}" alt="${movie.Title}">
-                <h4>${movie.Title}</h4>
-                <p>${movie.Year}</p>
+            <img src="${poster}" alt="${movie.Title}">
+            <div class="card-info">
+                <h4 class="title">${movie.Title}</h4>
+                <p class="year">${movie.Year}</p>
             </div>
         `;
 
@@ -98,44 +146,71 @@ function displayRandomMovies(movies) {
     });
 }
 
-
-
-let keywordInput = document.getElementById("search");
-
-keywordInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-        searchByKeyword(keywordInput.value);
-    }
-});
-
 async function searchByKeyword(keyword) {
-    let response = await fetch(`https://www.omdbapi.com/?s=${keyword}&apikey=${apikey}`);
-    let data = await response.json();
+    if (!keyword) return;
+    try {
+        let response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(keyword)}&apikey=${apikey}`);
+        let data = await response.json();
 
-    if (data.Response === "True") {
-        displayKeywordMovies(data.Search);
-    } else {
-        document.getElementById("keyword-results").innerHTML = 
-            "<h4>No results found</h4>";
+        if (data.Response === "True") {
+            displayKeywordMovies(data.Search);
+        } else {
+            const container = document.getElementById("keyword-results");
+            if (container) container.innerHTML = "<h4>No results found</h4>";
+        }
+    } catch (err) {
+        console.error("searchByKeyword error:", err);
+        const container = document.getElementById("keyword-results");
+        if (container) container.innerHTML = "<h4>Search failed</h4>";
     }
 }
 
 function displayKeywordMovies(movies) {
-    let container = document.getElementById("keyword-results");
-    container.innerHTML = ""; 
+    const container = document.getElementById("keyword-results");
+    if (!container) return; 
 
+    container.innerHTML = "";
     movies.forEach(movie => {
+        const poster = movie.Poster && movie.Poster !== "N/A"
+            ? movie.Poster
+            : 'https://via.placeholder.com/400x280/1a1a1a/ffffff?text=No+Poster';
+
         let col = document.createElement("div");
         col.className = "col-6 col-md-4 col-lg-3";
 
         col.innerHTML = `
             <div class="movie-card">
-                <img src="${movie.Poster}" alt="${movie.Title}">
-                <h4>${movie.Title}</h4>
-                <p>${movie.Year}</p>
+                <img src="${poster}" alt="${movie.Title}">
+                <div class="card-info">
+                    <h4 class="title">${movie.Title}</h4>
+                    <p class="year">${movie.Year}</p>
+                </div>
             </div>
         `;
 
         container.appendChild(col);
+    });
+}
+
+function setupMoviePageSearch() {
+    const searchInput = document.getElementById("search");
+    if (!searchInput || !window.location.pathname.includes('movie.html')) return;
+    
+    console.log("Movie page search initialized");
+    
+    searchInput.addEventListener("keypress", async function(e) {
+        if (e.key === "Enter" && this.value.trim()) {
+            e.preventDefault();
+            console.log("Searching for:", this.value);
+            
+            const success = await apiCall(this.value);
+            if (success) {
+                console.log("Movie found and loaded!");
+            } else {
+                console.log("Movie not found");
+            }
+            
+            this.value = ""; 
+        }
     });
 }

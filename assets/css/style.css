@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: Gutter_Rust_Italic;
-    src: url("/assets/fonts/Gutter_Rust_Italic.otf");
+    src: url("../fonts/Gutter_Rust_Italic.otf");
 }
 
 .header {
@@ -15,8 +15,52 @@
     font-family: Gutter_Rust_Italic;
 }
 
-.logo img {
-    width: 10%;
+.header-bar {
+   display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    gap: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+
+.logo-link {
+    gap: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+.header-logo {
+    width: 56px;        
+    height: auto;
+    display: block;
+}
+
+
+.header-search-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.header-search-input {
+    width: 520px;         
+    max-width: 60vw;      
+    min-width: 180px;     
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.15);
+}
+
+.header-search-wrap .btn {
+    border-radius: 12px;
+    padding: 0.6rem 1.25rem;
+    font-size: 1rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 .main-content {
@@ -63,7 +107,7 @@ a{
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
     cursor: pointer;
-    height: 420px;
+    height: 560px;
     display: flex;
     flex-direction: column;
 }
@@ -75,7 +119,7 @@ a{
 
 .movie-card img {
     width: 100%;
-    height: 280px;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
@@ -135,9 +179,22 @@ a{
     .movie-card .card-info {
         padding: 15px;
     }
+    .header-logo {
+        width: 44px;
+    }
+    .header-search-input {
+        width: 340px;
+        max-width: 52vw;
+        min-width: 140px;
+        font-size: 0.95rem;
+    }
+    .header-search-wrap .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .movie-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
@@ -149,6 +206,35 @@ a{
     
     .movie-card img {
         height: 280px;
+    }
+    .header-logo {
+        width: 40px;
+    }
+
+    .header-search-wrap .btn {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
+    .header-bar {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    .header-search-wrap {
+        width: calc(100% - 64px); 
+    }
+    .header-search-input {
+        width: 100%;
+        max-width: 100%;
+        min-width: 120px;
+        padding: 0.45rem 0.6rem;
+        font-size: 0.92rem;
+    }
+
+    .logo .col-12 {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
     }
 }
 
